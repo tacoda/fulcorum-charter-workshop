@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Reference pre-commit GATE — the top rung of the promotion ladder.
+#
+# A guide asks. A sensor reports. A GATE refuses. This script refuses: a commit
+# that trips any check below never lands. Install it with:
+#
+#   cp examples/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+#
+# Then watch it block a bad commit. That is the charter's "narrow output" lever
+# made mechanical — no agent, no model, just a rule with teeth.
+#
+# No dependencies beyond git + bash. The take-home upgrades this to the
+# `pre-commit` framework for real projects.
+
+set -euo pipefail
+
+fail() { echo "BLOCKED (charter gate): $1" >&2; exit 1; }
+
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+
+# --- Gate 1: no secrets (org policy, globbed to code + config) ---------------
+for f in $staged; do
+  case "$f" in
+    *.py|*.yaml|*.yml|*.env*|*.json)
+      if git show ":$f" | grep -Eiq '(sk-ant-|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----)'; then
+        fail "possible secret in $f"
+      fi ;;
+  esac
+done
+
+# --- Gate 2: routes register centrally (repo rule, globbed to app/routes) -----
+for f in $staged; do
+  case "$f" in
+    app/routes/*.py)
+      # a new router file that isn't referenced from the package init is out of band
+      base=$(basename "$f" .py)
+      if [ "$base" != "__init__" ] && ! grep -q "$base" app/routes/__init__.py 2>/dev/null; then
+        fail "$f defines a route but isn't registered in app/routes/__init__.py"
+      fi ;;
+  esac
+done
+
+# --- Gate 3: tests pass (sensor promoted to gate) ----------------------------
+if [ -d tests ] || ls test_*.py >/dev/null 2>&1; then
+  python -m pytest -q >/dev/null 2>&1 || fail "tests fail — fix the code, not the test"
+fi
+
+echo "charter gate: passed"
