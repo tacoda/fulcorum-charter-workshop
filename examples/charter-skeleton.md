@@ -23,9 +23,14 @@
 
 ## Ring 4 — Personal / task (the volatile inner ring — one job at a time)
 
-- TASK: <the specific job, filled in per run>
-- SCOPE: in / explicitly out
-- Local recoveries for this task.
+Rewritten every run. Here it holds the health-check task from
+`charter-with-levers.md`:
+
+- TASK: add `GET /healthz` in `app/routes/health.py`.
+- SCOPE: in — the new route and its test. out — existing routes, adjacent
+  refactors, new dependencies.
+- RECOVERY: test fails → fix the endpoint, not the test. Out-of-scope file
+  touched → revert it, then continue.
 
 ---
 

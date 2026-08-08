@@ -1,4 +1,4 @@
-# Workshop 1 — Take-Home: Make the Charter Robust
+# Workshop 1 — Take-Home: Harden the Charter
 
 The workshop got you a charter for one task on one repo. This turns it into a
 document you'd trust across a team. None of this is live-workshop material; do it

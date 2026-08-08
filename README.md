@@ -12,7 +12,8 @@ a template you fill in later, a working document you leave with.
 
 ## Duration
 
-3 hours, four segments. See `workshop.md`.
+2 hours, four segments and one break. See `workshop.md`. Setup is not workshop
+time — do it before you arrive.
 
 ## Prerequisites
 
@@ -33,12 +34,14 @@ a template you fill in later, a working document you leave with.
 
 ## What you'll leave with
 
-- A charter for your repo, split into **concentric layers** (policy → identity → task).
+- A charter for your repo, split into **concentric layers** (org → team → repo →
+  personal).
 - A litmus test you can apply to any new rule: which layer does this belong in?
-- A mapping from the engineering canon you already trust to the charter that
-  encodes it — so the charter isn't invented, it's *transcribed*.
-- One run where you watched the agent obey the charter, and one where you watched
-  it violate an unwritten rule — the gap that tells you what to write next.
+- Two or three glob-scoped rule files that attach each rule to the paths it governs.
+- One rule promoted from prose to a working pre-commit gate — and a real commit
+  blocked by it.
+- A baseline run under the charter, plus lever experiments diffed against it, so
+  you can feel which lever moves which behavior.
 
 ## Learning objectives
 
@@ -47,7 +50,9 @@ By the end you can:
 1. Read an unreliable agent run and name the missing constraint.
 2. Place a rule in the right layer using the litmus test, not by feel.
 3. Explain why layers are **concentric, not stacked** — and why stacking fails.
-4. Distinguish what belongs in the charter from what belongs in the harness
+4. Promote a rule up the ladder — guide → sensor → gate — and install a gate that
+   blocks a bad commit.
+5. Distinguish what belongs in the charter from what belongs in the harness
    (the seam Workshop 2 builds against).
 
 ## Checkpoints
